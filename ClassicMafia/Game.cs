@@ -25,5 +25,7 @@ public partial class Game
     // аргументированная контрастная позиция - хорошо
 
     public bool IsAlive(Player player) => players.Contains(player);
-    public bool IsOver() => players.Count(p => p.role.IsBlack()) >= players.Count(p => p.role.IsRead());
+    public bool IsOver() => players.Count(p => p.role.IsBlack()) >= players.Count(p => p.role.IsRed());
+
+    public bool HasGoodTalk(Player p) => rnd.NextDouble() > 0.5;
 }

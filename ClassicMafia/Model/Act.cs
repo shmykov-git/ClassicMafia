@@ -7,9 +7,10 @@ public class Act
     public Player pA; 
     public Player pB;
     public int count;
+    public ActColor color;    
     public required double force; // (0, 1) probability of act
     public required ActType type;
-    public required ActAbout about;
+    //public required ActWhy by;
     public List<Act> linkedActs = new(); // why he thinks so
     public string? text;
 }
