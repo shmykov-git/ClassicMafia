@@ -35,7 +35,7 @@ for (var i = 0; i < 10; i++)
             s[i][j] = '~';
         else
             if (rnd.NextDouble() > 0.3)
-                s[i][j] = rnd.NextDouble() > 0.333 ? 'Ч' : 'К';
+                s[i][j] = rnd.NextDouble() > 0.6 ? 'Ч' : 'К';
 
 
         Debug.Write($"{s[i][j],3}");
