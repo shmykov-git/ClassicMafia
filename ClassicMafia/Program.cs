@@ -15,6 +15,7 @@ var game = new Game(rnd) { players0 = players, players = players.ToList(), power
 
 //game.Play();
 
+var ps = (10).SelectRange(i => i).ToArray();
 var pairs = (10).SelectRange(i => (10-i-1).SelectRange(i + 1, j => (i, j))).SelectMany(v => v).ToArray();
 
 var s = (10).SelectRange(i => (10).SelectRange(j => '_').ToArray()).ToArray();
@@ -33,19 +34,22 @@ for (var i = 0; i < 10; i++)
         if (i == j)
             s[i][j] = '~';
         else
-            if (rnd.NextDouble() > 0.5)
-            s[i][j] = rnd.NextDouble() > 0.333 ? 'Ч' : 'К';
+            if (rnd.NextDouble() > 0.3)
+                s[i][j] = rnd.NextDouble() > 0.333 ? 'Ч' : 'К';
 
 
         Debug.Write($"{s[i][j],3}");
     }
 }
 
+Debug.WriteLine("");
+
 var together = pairs.Where(p => s[p.i][p.j] == 'К' && s[p.j][p.i] == 'К').ToArray();
-var splitted = pairs.Where(p => s[p.i][p.j] == 'Ч' && s[p.j][p.i] == 'Ч').ToArray();
+var split = pairs.Where(p => s[p.i][p.j] == 'Ч' && s[p.j][p.i] == 'Ч').ToArray();
 
 var g = new Graph(together);
-var teamPairs = g.FullVisit().Select(ns => ns.Select(n => n.i).ToArray()).Where(vs=>vs.Length > 1).ToArray();
+var teams = g.FullVisit().Select(ns => ns.Select(n => n.i).ToArray()).Where(vs=>vs.Length > 1).ToArray();
+var smeared = ps.Except(teams.SelectMany(vs => vs)).ToArray();
 
 var a = 1;
 
