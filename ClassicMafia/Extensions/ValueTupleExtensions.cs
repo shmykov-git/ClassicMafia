@@ -16,6 +16,11 @@ public static class ValueTupleExtensions
         return Enumerable.Range(0, range.m).SelectMany(i => Enumerable.Range(0, range.n).Select(j => selectFn(i, j)));
     }
 
+    public static void ForEach(this (int m, int n) range, Action<int, int> fn)
+    {
+        range.SelectRange((i, j) => { fn(i, j); return true; });
+    }
+
     public static IEnumerable<T> SelectSnakeRange<T>(this (int m, int n) range, Func<int, int, T> selectFn)
     {
         return range.SelectRange((i, j) => i % 2 == 0 ? selectFn(i, j) : selectFn(i, range.n - j - 1));

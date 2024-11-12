@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using ClassicMafia.Extensions;
+﻿using ClassicMafia.Extensions;
 
 public class ActArgs
 {
@@ -27,7 +26,7 @@ public partial class Game
 
     private (ActColor, double, string?) Act(ActArgs args)
     {
-        
+
         return (ActColor.Red, 0.7, "красный");
     }
 
@@ -68,7 +67,7 @@ public partial class Game
             {
                 var pos = GetPosition(pB);
                 var posOfMe = pos.acts.Where(a => a.pB == pA).ToArray();
-                
+
                 if (posOfMe.Any())
                     arguments.givenColor = posOfMe[^1].color;
             }

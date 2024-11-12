@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-public partial class Game
+﻿public partial class Game
 {
     public Game(Random rnd)
     {
@@ -14,13 +12,13 @@ public partial class Game
     private readonly Random rnd;
 
     public bool HasPosition(Player player) => rounds.SelectMany(r => r.acts).Any(act => act.pA == player);
-    public (Player p, Act[] acts) GetPosition(Player player) => 
+    public (Player p, Act[] acts) GetPosition(Player player) =>
         rounds.SelectMany(r => r.acts)
         .Where(act => act.pA == player)
         .GroupBy(act => act.pB)
         .Select(ga => (p: ga.Key, a: ga.OrderByDescending(v => v.count).ToArray()))
         .First();
-        
+
     // position contrast
     // аргументированная контрастная позиция - хорошо
 
