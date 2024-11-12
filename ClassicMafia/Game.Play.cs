@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using ClassicMafia.Extensions;
 
 public class ActArgs
 {
