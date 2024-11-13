@@ -18,7 +18,7 @@ public static class ValueTupleExtensions
 
     public static void ForEach(this (int m, int n) range, Action<int, int> fn)
     {
-        range.SelectRange((i, j) => { fn(i, j); return true; });
+        range.SelectRange((i, j) => { fn(i, j); return true; }).ToArray();
     }
 
     public static IEnumerable<T> SelectSnakeRange<T>(this (int m, int n) range, Func<int, int, T> selectFn)

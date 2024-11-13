@@ -1,4 +1,6 @@
-﻿namespace ClassicMafia.Extensions;
+﻿using System.Diagnostics;
+
+namespace ClassicMafia.Extensions;
 
 public static class ArrayExtensions
 {

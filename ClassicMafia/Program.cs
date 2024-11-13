@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using ClassicMafia.Extensions;
 using ClassicMafia.Graphs;
 
@@ -18,38 +19,42 @@ var game = new Game(rnd) { players0 = players, players = players.ToList(), power
 var ps = (10).SelectRange(i => i).ToArray();
 var pairs = (10).SelectRange(i => (10-i-1).SelectRange(i + 1, j => (i, j))).SelectMany(v => v).ToArray();
 
-var s = (10).SelectRange(i => (10).SelectRange(j => '_').ToArray()).ToArray();
+var moves = (10).SelectRange(i => (10).SelectRange(j => '_').ToArray()).ToArray();
 
-Debug.Write($"{" ",3}");
-for (var j = 0; j < 10; j++)
-    Debug.Write($"{j,3}");
-
-for (var i = 0; i < 10; i++)
+(10, 10).ForEach((i, j) =>
 {
-    Debug.WriteLine("");
-    Debug.Write($"{i,3}");
+    if (i == j)
+        moves[i][j] = '◯';
+    else if (rnd.NextDouble() > 0.25)
+        moves[i][j] = rnd.NextDouble() > 0.6 ? 'Ч' : 'К';
+});
 
-    for (var j = 0; j < 10; j++)
-    {
-        if (i == j)
-            s[i][j] = '~';
-        else
-            if (rnd.NextDouble() > 0.3)
-                s[i][j] = rnd.NextDouble() > 0.6 ? 'Ч' : 'К';
+moves.Debug();
 
-
-        Debug.Write($"{s[i][j],3}");
-    }
-}
-
-Debug.WriteLine("");
-
-var together = pairs.Where(p => s[p.i][p.j] == 'К' && s[p.j][p.i] == 'К').ToArray();
-var split = pairs.Where(p => s[p.i][p.j] == 'Ч' && s[p.j][p.i] == 'Ч').ToArray();
+var together = pairs.Where(p => moves[p.i][p.j].IsRed() && moves[p.j][p.i].IsRed()).ToArray();
+var split = pairs.Where(p => moves[p.i][p.j].IsBlack() && moves[p.j][p.i].IsBlack()).ToArray();
 
 var g = new Graph(together);
-var teams = g.FullVisit().Select(ns => ns.Select(n => n.i).ToArray()).Where(vs=>vs.Length > 1).ToArray();
-var smeared = ps.Except(teams.SelectMany(vs => vs)).ToArray();
+var teams = g.FullVisit().Select(ns => ns.Select(n => n.i).ToHashSet()).Where(vs=>vs.Count > 1).ToArray();
+var smeared = ps.Except(teams.SelectMany(vs => vs)).ToHashSet();
+
+// построить команду для одного человека
+
+teams.ForEach((t, iT) =>
+{
+    t.ForEach(a => moves[a].ForEach((ab, b) =>
+    {
+        if (t.Contains(b) && ab.IsBlack())
+        {
+            // игрок a и b не в команде t
+            t.Remove(a);
+            t.Remove(b);
+        }
+    }
+    ));
+}
+);
+
 
 var a = 1;
 
